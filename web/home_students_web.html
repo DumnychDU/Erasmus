@@ -1,0 +1,689 @@
+<!-- 
+Web application for Erasmus program 
+Creates an application form for students to register in the Erasmus program
+Using CSS to desing and JavaScript to implement functions for the required functionality
+KEMT FEI TUKE 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta lang="en">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="app">
+	<meta name="author" content="Jakub Cirip">
+
+	<link rel="icon" href="images/icon1.jpg" type="image/png" sizes="150x80">
+	<link rel="stylesheet" href="style.css">
+
+	<title>Student application form</title>
+
+	<link rel="stylesheet" href="/erasmus/src/css/style.css"> 
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
+	<script src="/erasmus/src/js_src/script.js"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Germania+One|Lobster');
+	</style>
+</head>
+
+<body>
+
+	<header class="container bg-dark">
+		<ul class="nav">
+			<li class="nav-item">
+				<a class="nav-link active text-warning" href="erasmus.html">Back</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active text-warning"
+					href="https://erasmus.tuke.sk/eu/pre-studentov/odchadzajuci-studenti/">Help</a>
+			</li>
+
+		</ul>
+	</header>
+
+
+	<section class="container pt-4">
+		<div class="pb-1" id="part1" onmousemove="change_part('part1')" onmouseleave="change_back('part1')">
+			<h2>STUDENT APPLICATION FORM</h2>
+			<form lang="en" action="/erasmus/src/php_src/home_students.php" method="post" id="myform" class="myform" enctype='multipart/form-data' onsubmit="return valid_and_captcha()">
+
+				<div class="form-group row">
+					<label for="uname" class="col-sm-3 col-form-label">Type of form:</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="type_programe" name="type_programe"
+							list="study_program" onchange="setBorderColor('type_programe'), set_length_of_programe()">
+						<datalist id="study_program">
+							<option>Study</option>
+							<option>Traineeship</option>
+						</datalist>
+					</div>
+				</div>
+				<div class="row text-center pt-3">
+					<div class="col-md">
+						<label for="uname">ACADEMIC YEAR</label>
+						<input type="number" min="1900" max="2099" step="1" value="2021" id="academic_year1"
+							name="academic_year1" required />
+						/
+						<input type="number" min="1900" max="2099" step="1" value="2022" id="academic_year2"
+							name="academic_year2" required />
+					</div>
+				</div>
+				<div class="form-group row pt-3">
+					<label for="uname" class="col-sm-3 col-form-label">FIELD OF STUDY:</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="field_of_study" id="field_of_study"
+							onchange="setBorderColor('field_of_study')">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="uname" class="col-sm-6 col-form-label">Number of higher education study years prior to
+						departure abroad:</label>
+					<div class="col-sm-6">
+						<input type="number" class="form-control" id="prior_years" name="prior_years" min="0" max="9"
+							onchange="setBorderColor('prior_years')">
+					</div>
+				</div>
+		</div>
+
+		<div id="part2" onmousemove="change_part('part2')" onmouseleave="change_back('part2')">
+			<h2 class="pt-4">SENDING INSTITUTION</h2>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Name and full address:</label>
+				<div class="col-sm-9">
+					<textarea style="width: 100%;" name="institution" id="institution" cols="40" rows="1"
+						class="form-control" onchange="setBorderColor('institution')"></textarea>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Faculty:</label>
+				<div class="col-sm-9">
+					<textarea class="form-control" name="faculty" id="faculty" cols="40" rows="1"
+						onchange="setBorderColor('faculty')"></textarea>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Departmental coordinator (contact person) - name,
+					telephone number, e-mail:</label>
+				<div class="col-sm-9">
+					<textarea class="form-control" name="coordinator" id="coordinator" cols="40" rows="1"
+						onchange="setBorderColor('coordinator')">Assoc. Prof. Mária Gamcová, PhD., tel.: +421602 2828, 4180; e-mail: maria.gamcova@tuke.sk</textarea>
+				</div>
+			</div>
+		</div>
+
+		<div id="part3" onmousemove="change_part('part3')" onmouseleave="change_back('part3')">
+			<h2 class="pt-4">STUDENT’S PERSONAL DATA</h2>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Family name:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="family_name" id="family_name"
+						onchange="setBorderColor('family_name')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">First name(s):</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="first_name" id="first_name"
+						onchange="setBorderColor('first_name')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Date of birth:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="date" name="date_of_birth" id="date_of_birth"
+						onchange="setBorderColor('date_of_birth')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Sex:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="sex" id="sex" onchange="setBorderColor('sex')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Nationaly:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="nationaly" id="nationaly"
+						onchange="setBorderColor('nationaly')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Place of Birth:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="place_of_birth" id="place_of_birth"
+						onchange="setBorderColor('place_of_birth')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Current address:</label>
+				<div class="col-sm-9">
+					<textarea class="form-control" name="address1" id="address1" cols="40" rows="2"
+						onchange="setBorderColor('address1')"></textarea>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Permanent address (if different):</label>
+				<div class="col-sm-9">
+					<textarea class="form-control" name="address2" id="address2" cols="40" rows="2"></textarea>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Tel.:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="tel" name="telephone" id="telephone"
+						onchange="setBorderColor('telephone')">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">E-mail:</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="email" name="mail" id="mail" onchange="setBorderColor('mail')">
+				</div>
+			</div>
+
+			<div class="container text-center">
+				<section class="insert_photograph">
+					<p><input type="file" accept="image/*" name="myfile0" id="image_file" onchange="loadFile(event),
+					setImageBorder('foto'), encodeImage(this) ;" style="display: none;"></p> 
+					<!-- <p><input type="file" accept="image/*" name="myfile0" id="image_file" onchange="loadFile(event),
+						setImageBorder('foto'), encodeImage(this) ;" style="display: none;"></p> -->
+					<p style="font-weight: bold;">Insert photograph:</p>
+					<p><label for="image_file" style="cursor: pointer;">
+							<img id="foto" width="165" height="180"
+								style="border-style:ridge; border-color: rgb(40, 125, 136); border-radius: 2px;" />
+						</label></p>
+				</section>
+			</div>
+		</div>
+
+		<div id="part4" onmousemove="change_part('part4')" onmouseleave="change_back('part4')">
+			<h2 class="pt-4">RECEIVING INSTITUTIONS (in order of preference)</h2>
+
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Study cycle during the mobility:</label>
+				<div class="col-sm-9">
+					<input class="form-control" list="id_study" name="study" id="study"
+						onchange="f_empty_value(), setBorderColor('study')" autocomplet="off">
+					<datalist id="id_study">
+						<option>First (bachelor)</option>
+						<option>Second (master)</option>
+						<option>Third (doctoral)</option>
+					</datalist>
+				</div>
+			</div>
+
+
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col">
+								Country
+							</th>
+							<th scope="col">
+								Institution
+							</th>
+							<th scope="col">
+								Study From
+							</th>
+							<th scope="col">
+								Study To
+							</th>
+							<th scope="col">
+								Duration of stay (months)
+							</th>
+							<th scope="col">
+								N° of expected ECTS credits
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td data-label="Country">
+								<input class="seding_institution_input" type="text" list="id_country" name="country"
+									id="country" autocomplet="on"
+									onchange="f_lov_university('study',this.value, 'university', 'id_university'), setBorderColor('country')">
+								<datalist id="id_country">
+									<option>Austria</option>
+									<option>Bulgaria</option>
+									<option>Cyprus</option>
+									<option>Czech Republic</option>
+									<option>Finland</option>
+									<option>France</option>
+									<option>Germany</option>
+									<option>Greece</option>
+									<option>Croatia</option>
+									<option>Lithuania</option>
+									<option>Latvia</option>
+									<option>Hungary</option>
+									<option>Poland</option>
+									<option>Portugal</option>
+									<option>Romania</option>
+									<option>Slovenia</option>
+									<option>Spain</option>
+									<option>Italy</option>
+									<option>Turkey</option>
+								</datalist>
+							</td>
+							<td data-label="Institution">								
+								<input class="seding_institution_input" list="id_university" name="university"
+									id="university" autocomplet="off" onchange="setBorderColor('university')">
+								<datalist id="id_university">
+									<option>Select country</option>
+								</datalist>
+							</td>
+							<td data-label="Study From">
+								<input class="seding_institution_input" onchange="dif_month('month1', 'month2', 'duration'),
+					setBorderColor('month1')" type="month" name="month1" id="month1">
+							</td>
+							<td data-label="Study To">
+								<input class="seding_institution_input" onchange="dif_month('month1', 'month2', 'duration'),
+					setBorderColor('month2')" type="month" name="month2" id="month2">
+							</td>
+
+							<td data-label="Duration of stay (months)">
+								<input class="duration_and_credits" type="number" id="duration" name="duration"
+									max="12" onchange="setBorderColor('duration')">
+							</td>
+							<td data-label="N° of expected ECTS credits">
+								<input class="duration_and_credits" type="number" id="credits" name="credits" min="15"
+									max="40" onchange="setBorderColor('credits')">
+							</td>
+
+						</tr>
+						<tr>
+							<td data-label="Country">
+								<input class="seding_institution_input" list="id_country" name="country2" id="country2"
+									autocomplete="off"
+									onchange="f_lov_university('study',this.value, 'university2', 'id_university2')">
+							</td>
+							<td data-label="Institution">
+								<input class="seding_institution_input" list="id_university2" name="university2"
+									id="university2" autocomplete="off">
+								<datalist id="id_university2">
+									<option>Select country</option>
+								</datalist>
+							</td>
+							<td data-label="Study From">
+								<input class="seding_institution_input"
+									onchange="dif_month('month12', 'month22', 'duration2')" type="month" name="month12"
+									id="month12">
+							</td>
+							<td data-label="Study To">
+								<input class="seding_institution_input"
+									onchange="dif_month('month12', 'month22', 'duration2')" type="month" name="month22"
+									id="month22">
+							</td>
+
+							<td data-label="Duration of stay (months)">
+								<input class="duration_and_credits" type="number" id="duration2" name="duration2"
+									max="12">
+							</td>
+							<td data-label="N° of expected ECTS credits">
+								<input class="duration_and_credits" type="number" id="credits2" name="credits2" min="15"
+									max="40">
+							</td>
+						</tr>
+						<tr>
+							<td data-label="Country">
+								<input class="seding_institution_input" list="id_country" name="country3" id="country3"
+									autocomplete="off"
+									onchange="f_lov_university('study',this.value, 'university3', 'id_university3')">
+							</td>
+							<td data-label="Institution">
+								<input class="seding_institution_input" list="id_university3" name="university3"
+									id="university3" autocomplete="off">
+								<datalist id="id_university3">
+									<option>Select country</option>
+								</datalist>
+							</td>
+							<td data-label="Study From">
+								<input class="seding_institution_input"
+									onchange="dif_month('month13', 'month23', 'duration3')" type="month" name="month13"
+									id="month13">
+							</td>
+							<td data-label="Study To">
+								<input class="seding_institution_input"
+									onchange="dif_month('month13', 'month23', 'duration3')" type="month" name="month23"
+									id="month23">
+							</td>
+							<td data-label="Duration of stay (months)">
+								<input class="duration_and_credits" type="number" id="duration3" name="duration3"
+									max="12">
+							</td>
+							<td data-label="N° of expected ECTS credits">
+								<input class="duration_and_credits" type="number" id="credits3" name="credits3" min="15"
+									max="40">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="part5" onmousemove="change_part('part5')" onmouseleave="change_back('part5')">
+			<h2 class="pt-4">LANGUAGE COMPETENCE</h2>
+
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Mother tongue:</label>
+				<div class="col-sm-9">
+					<input style="width: 100%;" name="m_tongue" id="m_tongue" cols="40" rows="1" class="form-control"
+						onchange="setBorderColor('m_tongue')"></input>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uname" class="col-sm-3 col-form-label">Language of instruction at home institution (if
+					different):</label>
+				<div class="col-sm-9">
+					<input style="width: 100%;" name="institution_language" id="institution_language" cols="40" rows="1"
+						class="form-control" onchange="setBorderColor('institution')"></input>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>
+								Other language
+							</th>
+							<th class="text-center">
+								A1
+							</th>
+							<th class="text-center">
+								A2
+							</th>
+							<th class="text-center">
+								B1
+							</th>
+							<th class="text-center">
+								B2
+							</th>
+							<th class="text-center">
+								C1
+							</th>
+							<th class="text-center">
+								C2
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+					<tbody id="language_value_1" onchange="setBorderColorNone('language_value_1')">
+						<td>
+							<input class="form-control" type="text" name="other_language_1" id="other_language_1"
+								onchange="setBorderColor('other_language_1')">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a1" name="a1" value="A1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a2" name="a1" value="A2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a3" name="a1" value="B1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a4" name="a1" value="B2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a5" name="a1" value="C1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="a6" name="a1" value="C2">
+						</td>
+					</tbody>
+					</tr>
+					<tr>
+						<td>
+							<input class="form-control" type="text" name="other_language_2" id="other_language_2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a1" name="r2a1" value="A1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a2" name="r2a1" value="A2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a3" name="r2a1" value="B1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a4" name="r2a1" value="B2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a5" name="r2a1" value="C1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r2a6" name="r2a1" value="C2">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input class="form-control" type="text" name="other_language_3" id="other_language_3">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a1" name="r3a1" value="A1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a2" name="r3a1" value="A2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a3" name="r3a1" value="B1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a4" name="r3a1" value="B2">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a5" name="r3a1" value="C1">
+						</td>
+						<td class="text-center">
+							<input type="radio" id="r3a6" name="r3a1" value="C2">
+						</td>
+					</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="part6" onmousemove="change_part('part6')" onmouseleave="change_back('part6')">
+			<h2 class="pt-4">PREVIOUS AND CURRENT STUDY</h2>
+			<div class="form-group row pt-3">
+				<label for="uname" class="col-sm-8 col-form-label">Have you already been studying abroad within the
+					Erasmus programme
+					in
+					the
+					study cycle of the mobility?</label>
+				<div class="col-sm-4">
+					<div id="previous_study_1" onchange="setBorderColorNone('previous_study_1')">
+						<label for="y1">YES</label>
+						<input type="radio" id="y1" name="yn1" value="YES"><br>
+						<label for="n1">NO</label>
+						<input type="radio" id="n1" name="yn1" value="NO">
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row pt-3">
+				<label for="uname" class="col-sm-4 col-form-label">If Yes, define the period of the mobility: </label>
+				<div class="col-sm-3">
+
+					from: <input lang="en" class="dates" type="date" name="date_from_1" id="date_from_1"
+						onchange="setBorderColor('date_from_1')">
+				</div>
+				<div class="col-sm-3">
+					till: <input style="position: relative; margin-left: 1.6%;" class="dates" type="date"
+						name="date_till_1" id="date_till_1" onchange="setBorderColor('date_till_1')">
+				</div>
+			</div>
+
+			<div class="form-group row pt-4">
+				<label for="uname" class="col-sm-8 col-form-label">Have you already been attending an Erasmus
+					traineeship abroad in
+					the
+					study
+					cycle of the mobility? </label>
+				<div class="col-sm-4">
+					<div id="previous_study_2" onchange="setBorderColorNone('previous_study_2')">
+						<label for="y2">YES</label>
+						<input type="radio" id="y2" name="yn2" value="YES"><br>
+						<label for="n2">NO</label>
+						<input type="radio" id="n2" name="yn2" value="NO">
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row pt-3">
+				<label for="uname" class="col-sm-4 col-form-label">If Yes, define the period of the mobility: </label>
+				<div class="col-sm-3">
+
+					from: <input lang="en" class="dates" type="date" name="date_from_2" id="date_from_2"
+						onchange="setBorderColor('date_from_2')">
+				</div>
+				<div class="col-sm-3">
+					till: <input style="position: relative; margin-left: 1.6%;" class="dates" type="date"
+						name="date_till_2" id="date_till_2" onchange="setBorderColor('date_till_2')">
+				</div>
+			</div>
+		</div>
+
+		<div id="part7" onmousemove="change_part('part7')" onmouseleave="change_back('part7')">
+			<h2 class="pt-4">ATTACHMENTS</h2>
+
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at1" name="at1" value="Curriculum vitae" checked>
+					<label for="uname">Curriculum vitae*</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile1" name="myfile1"
+						onchange="setBorderColor('myfile1'), checkedOnUpload('at1')">
+				</div>
+			</div>
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at2" name="at2" value="Transcript of records" checked>
+					<label for="at2" class="attachments">Transcript of records*</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile2" name="myfile2"
+						onchange="setBorderColor('myfile2'), checkedOnUpload('at2')">
+				</div>
+			</div>
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at3" name="at3" value="Cover letter in English language" checked>
+					<label for="at3" class="attachments">Cover letter in English language*</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile3" name="myfile3"
+						onchange="setBorderColor('myfile3'), checkedOnUpload('at3')">
+				</div>
+			</div>
+			
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at4" name="at4" value="Language competence certificate">
+					<label for="at4" class="attachments">Language competence certificate</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile4" name="myfile4" onchange="checkedOnUpload('at4')">
+				</div>
+			</div>
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at5" name="at5"
+						value="Certificate of scientific or academic achievements">
+					<label for="at5" class="attachments">Certificate of scientific or academic
+						achievements</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile5" name="myfile5" onchange="checkedOnUpload('at5')">
+				</div>
+			</div>
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at6" name="at6" value="Copy of valid passport (if non-EU citizens)">
+					<label for="at6" class="attachments">Copy of valid passport (if non-EU citizens)</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile6" name="myfile6" onchange="checkedOnUpload('at6')">
+				</div>
+			</div>
+			<div class="form-group row pt-3">
+				<div class="col-sm-5">
+					<input type="checkbox" id="at7" name="at7" value="Other (please specify):">
+					<label for="at7" class="attachments">Other (please specify):</label>
+					<input type="text" name="other" id="other_attachment" onchange="setBorderColor('other_attachment')">
+
+				</div>
+				<div class="col-sm-7">
+					<input type="file" id="myfile7" name="myfile7" onchange="checkedOnUpload('at7')">
+				</div>
+			</div>
+			<p>*compulsory</p>
+		</div>
+
+		<br><br>
+		<div id="part8" onmousemove="change_part('part8')" onmouseleave="change_back('part8')">
+			<div class="form-group row pt-3">
+				<div class="col-sm-12">
+					<input type="checkbox" id="confirm" name="confirm" value="Yes">
+					<label>I hereby certify that I agree with publication of my name, surname
+						and
+						e-mail address for the purposes of
+						the selection procedure. </label>
+
+				</div>
+			</div>
+		</div>
+
+
+		<section class="text-center pt-4">
+			<button type="button" class="btn btn-outline-primary btn-lg" id="downloadButton" onclick="downloadPDF2();">
+				Download PDF </button>
+		</section>
+
+		<div class="container pt-4">
+			<div id="this_captcha" style="display:none;" class="text-center">
+				<div>
+					<p style="font-weight: bold;"><input type="checkbox" value="false" id="robot" name="robot"> Im not robot - - >	<input type="checkbox" value="false" id="not_robot" name="not_robot"></p> 
+				</div>
+			</div>
+		</div>
+
+
+		<div class="container pt-4 pb-5">
+			<section class="text-center">
+				<input class="btn btn-outline-success btn-lg btn-block" name="save" type="submit" value="Submit">
+			</section>
+		</div>
+		</form>
+	</section>
+
+
+	<footer class="container-fluid bg-dark text-warning">Technical University of Kosice, Faculty of Electrical
+		Engineering and Informatics</footer>
+
+
+</body>
+
+
+</html>

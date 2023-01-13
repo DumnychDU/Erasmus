@@ -1,0 +1,30 @@
+
+body {
+  margin: 0;
+  font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif; 
+  box-sizing: border-box;
+} 
+
+ header {
+    overflow: hidden;
+    padding: 10px 14px;
+    text-decoration: none;
+  } 
+
+  footer {
+    width: 100%;
+    text-align: left;
+  } 
+
+  /* #this_captcha {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+}  */
+ 
+
+
+
+

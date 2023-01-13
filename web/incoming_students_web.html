@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>incoming_students</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="images/icon1.jpg" type="image/png" sizes="150x80">
+    <link rel="stylesheet" href="/erasmus/src/css/style.css"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/erasmus/src/js_src/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <header class="container bg-dark">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active text-warning" href="erasmus.html">Back</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active text-warning" href="https://erasmus.tuke.sk/eu/pre-studentov/prichadzajuci-studenti/">Help</a>
+            </li>
+        </ul>
+    </header>
+    <br>
+
+    <div class="container">
+        <p>Vyplňte jednotlivé polia / Complete the individual fields</p>
+    </div>
+
+    <div class="container">
+        <form action="/erasmus/src/php_src/incoming_students.php" method="post" id="incoming_form" onsubmit="return valid_incoming_and_captcha()">
+        <div class="pb-2" id="part1" onmousemove="change_part('part1')" onmouseleave="change_back('part1')">
+        <h2>OSOBNÉ ÚDAJE / PERSONAL DATA:</h2>
+            <div class="row pt-3">
+                <div class="col-md">
+                    <label for="uname">Meno / Name:</label>
+                    <input type="text" class="form-control" id="first_name" onchange="setBorderColor('first_name')" placeholder="First name" name="first_name">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Priezvisko / Surname:</label>
+                    <input type="text" class="form-control" id="surname_name" onchange="setBorderColor('surname_name')" placeholder="Surname" name="surname_name">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col-md">
+                    <label for="uname">Rodné číslo / Personal Identification Number:</label>
+                    <input type="text" class="form-control" id="personal_id" onchange="setBorderColor('personal_id')"
+                        placeholder="Personal Identification Number" name="personal_id">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Dátum a miesto narodenia / Date and place of birth:</label>
+                    <input type="text" class="form-control" name="date_and_place" id="date_and_place_of_birth" placeholder="Date and place of birth"
+                    onchange="setBorderColor('date_and_place_of_birth')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col-md">
+                    <label for="uname">Národnosť/ Nationality:</label>
+                    <input type="text" class="form-control" id="nationaly" placeholder="Nationality" name="nationaly"
+                    onchange="setBorderColor('nationaly')">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Zdravotná spôsobilosť / Health ability:</label>
+                    <input type="text" class="form-control" id="h_ability" placeholder="Health ability"
+                    name="h_ability" onchange="setBorderColor('h_ability')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col-md">
+                    <label for="uname">Rodinný stav / Marital status:</label>
+                    <input type="text" class="form-control" id="m_status" placeholder="Marital status" name="m_status"
+                    onchange="setBorderColor('m_status')">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Štátna príslušnosť / Citizenship:</label>
+                    <input type="text" class="form-control" id="citizenship" placeholder="Citizenship"
+                        name="citizenship" onchange="setBorderColor('citizenship')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col-md">
+                    <label for="uname">Pohlavie / Sex:</label>
+                    <input type="text" class="form-control" id="sex" placeholder="Sex" name="sex"
+                    onchange="setBorderColor('sex')">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Číslo pasu / Passport number/ID number:</label>
+                    <input type="text" class="form-control" id="passport" placeholder="Passport number/ID number"
+                        name="passport" onchange="setBorderColor('passport')">
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-2" id="part2" onmousemove="change_part('part2')" onmouseleave="change_back('part2')">
+            <h2 class="pt-5">KONTAKTNÉ ÚDAJE / CONTACT DATA:</h2>
+
+            <div class="row pt-3">
+                <div class="col-md">
+                    <div class="col-md pt-3">
+                        <p>Terajšia adresa / PRESENT Address(in Slovakia)</p>                      
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Ulica, číslo / Street, number:</label>
+                        <input type="text" class="form-control" id="present_street" placeholder="Street, number"
+                            name="present_street" onchange="setBorderColor('present_street')">
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Mesto, PSČ / City, post code number:</label>
+                        <input type="text" class="form-control" id="present_city" placeholder="City, post code number"
+                            name="present_city" onchange="setBorderColor('present_city')">
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Štát / State:</label>
+                        <input type="text" class="form-control" id="present_state" placeholder="State" name="present_state"
+                        onchange="setBorderColor('present_state')">
+                    </div>
+                </div>
+
+                <div class="col-md">
+                    <div class="col-md pt-3">
+                        <p>Adr. trvalého bydliska / PERMANENT Address (Home-land):</p>
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Ulica, číslo / Street, number:</label>
+                        <input type="text" class="form-control" id="permanent_street" placeholder="Street, number"
+                            name="permanent_street" onchange="setBorderColor('permanent_street')">
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Mesto, PSČ / City, post code number:</label>
+                        <input type="text" class="form-control" id="permanent_city" placeholder="City, post code number"
+                            name="permanent_city" onchange="setBorderColor('permanent_city')">
+                    </div>
+                    <div class="col-md pt-3">
+                        <label for="uname">Štát / State:</label>
+                        <input type="text" class="form-control" id="permanent_state" placeholder="State"
+                            name="permanent_state" onchange="setBorderColor('permanent_state')">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row pt-4">
+                <div class="col-md">
+                    <label for="uname">E-mail:</label>
+                    <input type="email" class="form-control" id="mail" placeholder="E-mail" name="mail"
+                    onchange="setBorderColor('mail')">
+                </div>
+                <div class="col-md">
+                    <label for="uname">Tel.číslo /Phone number:</label>
+                    <input type="tel" class="form-control" id="phone_number" placeholder="Phone number"
+                        name="phone_number" onchange="setBorderColor('phone_number')">
+                </div>
+            </div>
+        </div>
+
+<div class="pb-2" id="part3" onmousemove="change_part('part3')" onmouseleave="change_back('part3')">
+            <h2 class="pt-5">DOSIAHNUTÉ VZDELANIE /ACHIEVED EDUCATION:</h2>
+            <p>Stredná škola (presný názov a adresa) / Comprehensive (high) school
+                (exact name and address): relevant for 1st and 2nd level of study (bachelor and master level)</p>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Univerzita (presný názov a adresa) /Home University (exact name and
+                        address):</label>
+                    <input type="text" class="form-control" id="home_university" placeholder="Home University"
+                        name="home_university" onchange="setBorderColor('home_university')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Študijný program / Study field (branch):</label>
+                    <input type="text" class="form-control" id="study_field" placeholder="Study field"
+                        name="study_field" onchange="setBorderColor('study_field')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Špecializácia / Specialization:</label>
+                    <input type="text" class="form-control" id="specialization" placeholder="Specialization"
+                        name="specialization" onchange="setBorderColor('specialization')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Ročník štúdia / Year of study at university:</label>
+                    <input type="text" class="form-control" id="year_of_study" placeholder="Year of study"
+                        name="year_of_study" onchange="setBorderColor('year_of_study')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Stupeň štúdia/Level of study:</label>
+                    <input type="text" class="form-control" id="level_of_study" placeholder="Level of study"
+                        name="level_of_study" onchange="setBorderColor('level_of_study')">
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col">
+                    <label for="uname">Trvanie štúdia / Duration of study at TUKE from:</label>
+                    <input type="date" class="form-control" id="duration_from" placeholder="Level of study"
+                        name="duration_from" onchange="setBorderColor('duration_from')">
+                </div>
+                <div class="col">
+                    <label for="uname">until:</label>
+                    <input type="date" class="form-control" id="duration_to" placeholder="Level of study"
+                        name="duration_to" onchange="setBorderColor('duration_to')">
+                </div>
+            </div>
+</div>
+
+    </div>
+
+    <div class="container pt-5 text-center">
+        <section>
+            <button type="button" class="btn btn-outline-primary btn-lg" id="downloadButton2" onclick="downloadPDF_incoming();"> Download PDF </button>
+            
+        </section>
+    </div>
+
+    <div class="container pt-4">
+        <div id="this_captcha" style="display:none;" class="text-center">
+            <div>
+                <p style="font-weight: bold;"><input type="checkbox" id="robot" name="robot"> Im not robot - - >	<input type="checkbox" id="not_robot" name="not_robot"></p> 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container pt-4 pb-5">
+        <section class=" text-center">
+            <input class="btn btn-outline-success btn-lg btn-block" name="save_to_db" type="submit" value="Submit">
+            
+        </section>
+    </div>
+</form>
+
+    <footer class="container-fluid bg-dark text-warning">Technical University of Kosice, Faculty of Electrical Engineering and Informatics</footer>
+
+
+
+</body>
+
+</html>
